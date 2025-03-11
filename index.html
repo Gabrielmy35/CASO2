@@ -37,6 +37,7 @@
                         <div class="text-btn">Get Started</div>
                         <img src="Imagenes/flecha.png" loading="lazy" width="20" alt=""/>
                     </a>
+                    <button id="language-toggle">Español</button>
                 </div>
                 <div class="menu-button w-nav-button">
                     <div class="icon w-icon-nav-menu"></div>
@@ -155,5 +156,35 @@
                                  srcset="Imagenes/Solution img-p-500.png 500w, Imagenes/Solution img-p-800.png 800w, Imagenes/Solution img-p-1080.png 1080w, Imagenes/Solution img.png 1228w"/></div>
                     </div>
                 </div>
+                <script>
+                    const translations = {
+                        en: {
+                            header: "Manage Your Team's Chats with Daki",
+                            description: "Effortlessly manage and organize chats, tasks, and files in one central location with our SaaS chat management solution",
+                            getStarted: "Get started for free"
+                        },
+                        es: {
+                            header: "Administra los chats de tu equipo con Daki",
+                            description: "Administra y organiza fácilmente chats, tareas y archivos en un solo lugar con nuestra solución SaaS",
+                            getStarted: "Comenzar gratis"
+                        }
+                    };
+            
+                    function changeLanguage(lang) {
+                        localStorage.setItem('language', lang);
+                        document.querySelector('.h1.white').textContent = translations[lang].header;
+                        document.querySelector('.p-18.white').textContent = translations[lang].description;
+                        document.querySelector('.btn.get-started.green .text-btn').textContent = translations[lang].getStarted;
+                        document.getElementById('language-toggle').textContent = lang === 'en' ? 'Español' : 'English';
+                    }
+            
+                    const savedLanguage = localStorage.getItem('language') || 'en';
+                    changeLanguage(savedLanguage);
+            
+                    document.getElementById('language-toggle').addEventListener('click', () => {
+                        const newLang = localStorage.getItem('language') === 'en' ? 'es' : 'en';
+                        changeLanguage(newLang);
+                    });
+                </script>
     
     

@@ -250,55 +250,100 @@
             <div class="footer-top">
                 <div class="footer-split left">
                     <div class="footer-logo">
-                        <img src="Imagenes/Daki3.png" loading="lazy" width="94.5" alt=""/></div>
-                        <div class="p-16 grey footer">Effortlessly manage and organize chats, tasks, and files in one central location with our SaaS chat management solution</div>
-                        <div class="subcribe-wrapper">
-                            <div class="w-form">
-                                <form id="email-form" name="email-form" data-name="Email Form" method="get" class="form" data-wf-page-id="647543863b2ddd2dc92f7c6e" 
-                                data-wf-element-id="24696453-99ae-c647-0181-b1eb5cd7e19e"></form>
-                                <input class="input-form w-input" maxlength="256" name="name" data-name="Name" placeholder="caso2@example.com" type="email" id="name"/>
+                        <img src="Imagenes/Daki3.png" loading="lazy" width="94.5" alt="Daki Logo"/>
+                    </div>
+                    <div class="p-16 grey footer" data-en="Effortlessly manage and organize chats, tasks, and files in one central location with our SaaS chat management solution"
+                         data-es="Administra y organiza chats, tareas y archivos en un solo lugar con nuestra solución de gestión de chats SaaS">
+                        Effortlessly manage and organize chats, tasks, and files in one central location with our SaaS chat management solution
+                    </div>
+                    <div class="subcribe-wrapper">
+                        <div class="w-form">
+                            <form id="email-form" name="email-form" data-name="Email Form" method="get" class="form" data-wf-page-id="647543863b2ddd2dc92f7c6e" 
+                                  data-wf-element-id="24696453-99ae-c647-0181-b1eb5cd7e19e">
+                                <input class="input-form w-input" maxlength="256" name="name" data-name="Name" placeholder="caso2@example.com" type="email" id="name" required/>
                                 <a href="#" class="btn subcribe w-inline-block">
-                                    <div class="text-btn white">Subcribe</div>
-                                    <img src="Imagenes/flecha2.png" loading="lazy" width="20" alt="" class="arrow"/></a>
-                                </form>
-                                <div class="w-form-done">
-                                    <div>Thank you! Your submission has been received!</div>
+                                    <div class="text-btn white" data-en="Subscribe" data-es="Suscribirse">Subscribe</div>
+                                    <img src="Imagenes/flecha2.png" loading="lazy" width="20" alt="Arrow Icon" class="arrow"/>
+                                </a>
+                            </form>
+                            <div class="w-form-done">
+                                <div data-en="Thank you! Your submission has been received!" data-es="¡Gracias! Hemos recibido tu solicitud.">
+                                    Thank you! Your submission has been received!
                                 </div>
-                                <div class="w-form-fail">
-                                    <div>Oops! Something went wrong while submitting the form.</div>
+                            </div>
+                            <div class="w-form-fail">
+                                <div data-en="Oops! Something went wrong while submitting the form." data-es="¡Oops! Algo salió mal al enviar el formulario.">
+                                    Oops! Something went wrong while submitting the form.
                                 </div>
                             </div>
                         </div>
-                    </div>
-                <script>
-                   document.addEventListener('DOMContentLoaded', () => {
-    const langToggle = document.getElementById('language-toggle');
-    let currentLang = localStorage.getItem('language') || 'en';
-
-    // Función para aplicar traducciones
-    const setLanguage = (lang) => {
-        document.documentElement.lang = lang;
-        currentLang = lang;
-        localStorage.setItem('language', lang);
-
-        // Actualizar textos
-        document.querySelectorAll('[data-en], [data-es]').forEach(el => {
-            el.textContent = el.getAttribute('data-' + lang);
-        });
-
-        // Actualizar texto del botón
-        langToggle.textContent = lang === 'en' ? 'ES' : 'EN';
-    };
-
-    // Cargar idioma guardado
-    setLanguage(currentLang);
-
-    // Manejador del botón
-    langToggle.addEventListener('click', () => {
-        const newLang = currentLang === 'en' ? 'es' : 'en';
-        setLanguage(newLang);
-    });
-});
-                </script>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                // Inicializar todas las animaciones Lottie
+                                const lottieElements = document.querySelectorAll('.lottie-animation');
+                                lottieElements.forEach(lottieElement => {
+                                    const animationPath = lottieElement.getAttribute('data-src');
+                                    const loop = lottieElement.getAttribute('data-loop') === '1';
+                                    const autoplay = lottieElement.getAttribute('data-autoplay') === '1';
+                                    const renderer = lottieElement.getAttribute('data-renderer') || 'svg';
+                    
+                                    lottie.loadAnimation({
+                                        container: lottieElement,
+                                        renderer: renderer,
+                                        loop: loop,
+                                        autoplay: autoplay,
+                                        path: animationPath
+                                    });
+                                });
+                    
+                                // Agregar interacción para expandir/colapsar
+                                const solutionItems = document.querySelectorAll('.solution-item');
+                                solutionItems.forEach(item => {
+                                    const topSection = item.querySelector('.solution-item-top');
+                                    const bottomSection = item.querySelector('.solution-item-btm');
+                    
+                                    topSection.addEventListener('click', () => {
+                                        bottomSection.classList.toggle('active');
+                    
+                                        const lottieAnimation = item.querySelector('.lottie-animation');
+                                        if (lottieAnimation) {
+                                            lottieAnimation.lottie.play();
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const langToggle = document.getElementById('language-toggle');
+                                let currentLang = localStorage.getItem('language') || 'en';
+                        
+                                // Función para aplicar traducciones
+                                const setLanguage = (lang) => {
+                                    document.documentElement.lang = lang;
+                                    currentLang = lang;
+                                    localStorage.setItem('language', lang);
+                        
+                                    // Actualizar textos
+                                    document.querySelectorAll('[data-en], [data-es]').forEach(el => {
+                                        el.textContent = el.getAttribute('data-' + lang);
+                                    });
+                        
+                                    // Actualizar texto del botón
+                                    langToggle.textContent = lang === 'en' ? 'ES' : 'EN';
+                                };
+                        
+                                // Cargar idioma guardado
+                                setLanguage(currentLang);
+                        
+                                // Manejador del botón
+                                langToggle.addEventListener('click', () => {
+                                    const newLang = currentLang === 'en' ? 'es' : 'en';
+                                    setLanguage(newLang);
+                                });
+                            });
+                        </script>
+    </body>
+</html>
     
     

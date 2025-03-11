@@ -3186,3 +3186,11 @@ html {
 #language-toggle:hover {
     background: #0056b3;
 }
+.solution-item-btm {
+  display: none; /* Ocultar por defecto */
+  transition: all 0.3s ease;
+}
+
+.solution-item-btm.active {
+  display: block; /* Mostrar cuando tenga la clase "active" */
+}

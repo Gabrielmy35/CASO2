@@ -3186,48 +3186,113 @@ html {
 #language-toggle:hover {
     background: #0056b3;
 }
-/* Animación de expandir/colapsar (textos y flecha) */
+.hover-effect {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .solution-item-btm {
-  max-height: 0; /* Inicialmente colapsado */
-  overflow: hidden; /* Oculta el contenido que excede la altura */
-  transition: max-height 0.5s ease; /* Animación suave */
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
 }
 
 .solution-item-btm.active {
-  max-height: 500px; /* Ajusta este valor según el contenido máximo */
+  max-height: 500px; /* Ajustar según necesidad */
 }
 /* Animación de fadeIn */
-@keyframes fadeIn {
-  from {
+@keyframes fadeInUp {
+  0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px) scale(0.98);
   }
-  to {
+  50% {
+    transform: translateY(5px) scale(1.02);
+  }
+  100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-/* Animación de fade-in (scroll) */
+/* Nueva animación para elementos que aparecen desde los lados */
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Desactivar transiciones durante cambio de idioma */
+.no-transitions .fade-in {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Asegurar visibilidad durante la transición */
 .fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  animation-fill-mode: both;
+  animation-duration: 0.8s;
+  transition: 
+      opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+.no-transitions {
+  animation: none !important;
+  transition: none !important;
+}
+
+.fade-in:not(.visible) {
+  opacity: 0 !important;
+  transform: translateY(20px) !important;
+}
+
+/* Clase principal para activar animaciones */
 .fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+  animation-name: fadeInUp;
 }
 
-/* Retrasos para la animación de fade-in */
-.fade-in.delay-1 { transition-delay: 0.2s; }
-.fade-in.delay-2 { transition-delay: 0.4s; }
-.fade-in.delay-3 { transition-delay: 0.6s; }
-.fade-in.delay-4 { transition-delay: 0.8s; }
-.fade-in.delay-5 { transition-delay: 1s; }
-.fade-in.delay-6 { transition-delay: 1.2s; }
-.fade-in.delay-7 { transition-delay: 1.4s; }
-.fade-in.delay-8 { transition-delay: 1.6s; }
-.fade-in.delay-9 { transition-delay: 1.8s; }
-.fade-in.delay-10 { transition-delay: 2s; }
+/* Variaciones dinámicas */
+.fade-in.slide-left { animation-name: slideIn; }
+.fade-in.slide-right { animation-name: slideIn; transform: translateX(30px); }
+
+/* Efecto escalonado para elementos en grid/listas */
+.fade-in.staggered:nth-child(1) { animation-delay: 0.1s; }
+.fade-in.staggered:nth-child(2) { animation-delay: 0.2s; }
+.fade-in.staggered:nth-child(3) { animation-delay: 0.3s; }
+/* Añadir más según necesidad */
+
+/* Delays dinámicos con progresión no lineal */
+.fade-in.delay-1 { animation-delay: 0.15s; }
+.fade-in.delay-2 { animation-delay: 0.3s; }
+.fade-in.delay-3 { animation-delay: 0.45s; }
+.fade-in.delay-4 { animation-delay: 0.6s; }
+.fade-in.delay-5 { animation-delay: 0.8s; }
+.fade-in.delay-6 { animation-delay: 1s; }
+.fade-in.delay-7 { transition-delay: 0.4s; }
+.fade-in.delay-8 { transition-delay: 0.6s; }
+.fade-in.delay-9 { transition-delay: 0.8s; }
+.fade-in.delay-10 { transition-delay: 1s; }
+.fade-in.delay-11 { transition-delay: 0.2s; }
+.fade-in.delay-12 { transition-delay: 0.4s; }
+.fade-in.delay-13 { transition-delay: 0.6s; }
+.fade-in.delay-14 { transition-delay: 0.8s; }
+.fade-in.delay-15 { transition-delay: 1s; }
+.fade-in.delay-16 { transition-delay: 0.2s; }
+.fade-in.delay-17 { transition-delay: 0.4s; }
+.fade-in.delay-18 { transition-delay: 0.6s; }
+.fade-in.delay-19 { transition-delay: 0.8s; }
+
+/* Duración diferente para algunos elementos */
+.fade-in.slow { animation-duration: 1.2s; }
+.fade-in.fast { animation-duration: 0.5s; }
+
+/* Efecto hover para elementos interactivos */
+.fade-in.hover-effect:hover {
+  transform: translateY(-3px);
+  transition: all 0.3s ease;
+}

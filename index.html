@@ -115,6 +115,7 @@
               Our SaaS chat management solution offers a range of features to help you streamline communication and boost productivity
             </p>
           </div>
+          <!-- Solución -->
           <div class="solution-content">
             <div class="solution-split fade-in delay-5">
               <div class="heading-wrap solution">
@@ -129,7 +130,7 @@
                     <div class="solution-item-top">
                       <div class="solution-title fade-in delay-9" data-en="Task Management" data-es="Gestión de Tareas">Task Management</div>
                       <div class="lottie-animation" data-w-id="c54ab5a8-6eeb-30d3-0afa-fd382f59cbd5" 
-                      data-animation-type="lottie" data-src="JSON1.json" 
+                      data-animation-type="lottie" data-src="flecha.json" 
                       data-loop="0" data-direction="1" data-autoplay="1" data-is-ix2-target="0" data-renderer="svg" data-default-duration="1" data-duration="0"></div>
                     </div>
                     <div class="solution-item-btm">
@@ -143,7 +144,7 @@
                   <div class="solution-item-top">
                     <div class="solution-title fade-in delay-11" data-en="File Sharing" data-es="Compartir Archivos">File Sharing</div>
                     <div class="lottie-animation" data-w-id="c54ab5a8-6eeb-30d3-0afa-fd382f59cbd5" 
-                         data-animation-type="lottie" data-src="JSON1.json" 
+                         data-animation-type="lottie" data-src="flecha.json" 
                          data-loop="0" data-direction="1" data-autoplay="1" data-is-ix2-target="0" data-renderer="svg" data-default-duration="1" data-duration="0">
                     </div>
                   </div>
@@ -158,7 +159,7 @@
                   <div class="solution-item-top">
                     <div class="solution-title fade-in delay-13" data-en="Chat Management" data-es="Gestión de Chats">Chat Management</div>
                     <div class="lottie-animation" data-w-id="f1634b30-2487-2b16-62c3-0fce50855614" 
-                         data-animation-type="lottie" data-src="JSON1.json" 
+                         data-animation-type="lottie" data-src="flecha.json" 
                          data-loop="0" data-direction="1" data-autoplay="1" data-is-ix2-target="0" data-renderer="svg" data-default-duration="1" data-duration="0">
                     </div>
                   </div>
@@ -173,7 +174,7 @@
                   <div class="solution-item-top">
                     <div class="solution-title fade-in delay-15" data-en="Integrations" data-es="Integraciones">Integrations</div>
                     <div class="lottie-animation " data-w-id="00b5d557-aee3-b114-28f5-42d9fc6b8961" 
-                         data-animation-type="lottie" data-src="JSON1.json" 
+                         data-animation-type="lottie" data-src="flecha.json" 
                          data-loop="0" data-direction="1" data-autoplay="1" data-is-ix2-target="0" data-renderer="svg" data-default-duration="1" data-duration="0">
                     </div>
                   </div>
@@ -330,9 +331,74 @@
             const langToggle = document.getElementById('language-toggle');
             let observer;
             let lastScrollPos = window.scrollY;
+            const lottieAnimations = new Map();
+            let observedElements = [];
     
-            // 1. Gestión de animaciones
-            const initAnimations = () => {
+            // 1. Inicializar animaciones Lottie
+            const initLottieAnimations = () => {
+    document.querySelectorAll('.lottie-animation').forEach(container => {
+        const anim = lottie.loadAnimation({
+            container: container,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false, // Cambiado a false
+            path: container.dataset.src,
+            initialSegment: [0, 30] // Ajustar según JSON
+        });
+        
+        // Estado inicial de la flecha
+        anim.goToAndStop(0, true);
+        container.animation = anim;
+        container.dataset.expanded = 'false';
+        
+        // Reiniciar animación al cambiar idioma
+        container.addEventListener('DOMSubtreeModified', () => {
+            anim.goToAndStop(0, true);
+        });
+
+        lottieAnimations.set(container, anim);
+    });
+};
+    
+            // 2. Control del acordeón
+            const setupAccordion = () => {
+    document.querySelectorAll('.solution-item-top').forEach(item => {
+        item.addEventListener('click', function() {
+            const container = this.querySelector('.lottie-animation');
+            const content = this.nextElementSibling; // .solution-item-btm
+            const anim = container.animation;
+            const isExpanded = container.dataset.expanded === "true";
+
+            // Animación de flecha
+            anim.setDirection(isExpanded ? -1 : 1);
+            anim.play();
+
+            // Animación de contenido
+            if(isExpanded) {
+                content.style.maxHeight = "0";
+                content.style.opacity = "0";
+            } else {
+                content.style.maxHeight = `${content.scrollHeight + 30}px`;
+                content.style.opacity = "1";
+            }
+            
+            container.dataset.expanded = !isExpanded;
+        });
+    });
+};
+    
+            // 3. Sistema de idiomas
+            const resetAllAnimations = () => {
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    el.classList.remove('visible');
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                });
+            };
+    
+            const initScrollAnimations = () => {
+                if (observer) observer.disconnect();
+                
                 observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
@@ -340,123 +406,105 @@
                             handleComplexAnimations(entry.target);
                         }
                     });
-                }, { 
-                    threshold: 0.15,
-                    rootMargin: '0px 0px -100px 0px'
-                });
+                }, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
     
                 document.querySelectorAll('.fade-in').forEach(el => {
-                    resetAnimationState(el);
                     observer.observe(el);
                 });
             };
     
-            // 2. Animaciones complejas
-            const handleComplexAnimations = (element) => {
-                if (element.classList.contains('slide-left')) {
-                    element.style.transform = 'translateX(-30px)';
-                    setTimeout(() => {
-                        element.style.transform = 'translateX(0)';
-                    }, 50);
-                }
-                
-                if (element.classList.contains('slide-right')) {
-                    element.style.transform = 'translateX(30px)';
-                    setTimeout(() => {
-                        element.style.transform = 'translateX(0)';
-                    }, 50);
-                }
-            };
-    
-            // 3. Reinicio completo de animaciones
-            const resetAllAnimations = () => {
-                document.body.classList.add('no-transitions');
-                
-                document.querySelectorAll('.fade-in').forEach(el => {
-                    resetAnimationState(el);
-                    observer.unobserve(el);
-                    observer.observe(el);
+            const updateContent = () => {
+                document.querySelectorAll('[data-en], [data-es]').forEach(el => {
+                    el.textContent = el.getAttribute(`data-${currentLang}`);
                 });
-    
+                
+                resetAllAnimations();
+                initScrollAnimations();
+                
                 setTimeout(() => {
-                    document.body.classList.remove('no-transitions');
-                    triggerHeaderAnimations();
-                }, 50);
-            };
-    
-            // 4. Estado inicial de animaciones
-            const resetAnimationState = (element) => {
-                element.style.opacity = '0';
-                element.classList.remove('visible');
-                
-                if (element.classList.contains('slide-left')) {
-                    element.style.transform = 'translateX(-30px)';
-                } else if (element.classList.contains('slide-right')) {
-                    element.style.transform = 'translateX(30px)';
-                } else {
-                    element.style.transform = 'translateY(30px) scale(0.98)';
-                }
-            };
-    
-            // 5. Animación especial para el header
-            const triggerHeaderAnimations = () => {
-                const headerElements = document.querySelectorAll('.header .fade-in');
-                headerElements.forEach((el, index) => {
-                    setTimeout(() => {
-                        el.classList.add('visible');
-                        handleComplexAnimations(el);
-                    }, index * 150);
-                });
-            };
-    
-            // 6. Detección de scroll inverso
-            const handleScroll = () => {
-                const currentScrollPos = window.scrollY;
-                
-                if (currentScrollPos < lastScrollPos) { // Scroll hacia arriba
-                    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => {
+                    document.querySelectorAll('.fade-in').forEach(el => {
                         const rect = el.getBoundingClientRect();
-                        if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+                        if (rect.top < window.innerHeight && rect.bottom >= 0) {
                             el.classList.add('visible');
                             handleComplexAnimations(el);
                         }
                     });
-                }
-                lastScrollPos = currentScrollPos;
-            };
-    
-            // 7. Sistema de idiomas
-            const changeLanguage = (newLang) => {
-                currentLang = newLang;
-                localStorage.setItem('language', newLang);
+                }, 50);
                 
-                document.querySelectorAll('[data-en], [data-es]').forEach(el => {
-                    el.textContent = el.getAttribute(`data-${newLang}`);
-                });
-    
-                resetAllAnimations();
+                langToggle.textContent = currentLang === 'en' ? 'ES' : 'EN';
             };
     
-            // Event listeners
-            langToggle.addEventListener('click', () => {
-                const newLang = currentLang === 'en' ? 'es' : 'en';
-                langToggle.textContent = newLang === 'en' ? 'ES' : 'EN';
-                changeLanguage(newLang);
-            });
-    
-            window.addEventListener('scroll', handleScroll);
+            // 4. Animaciones complejas
+            const handleComplexAnimations = (element) => {
+                const delay = element.classList.contains('delay-1') ? 0.2 :
+                            element.classList.contains('delay-2') ? 0.4 :
+                            element.classList.contains('delay-3') ? 0.6 : 0;
+                
+                element.style.transition = `all 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${delay}s`;
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            };
+
+            const setupHoverEffects = () => {
+    document.querySelectorAll('.solution-item').forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            item.style.transform = 'translateY(-5px)';
+        });
+        
+        item.addEventListener('mouseleave', () => {
+            item.style.transform = 'translateY(0)';
+        });
+    });
+};
     
             // Inicialización
             const initialize = () => {
-                langToggle.textContent = currentLang === 'en' ? 'ES' : 'EN';
-                initAnimations();
-                triggerHeaderAnimations();
+                initLottieAnimations();
+                setupAccordion();
+                initScrollAnimations();
+                updateContent();
+                
+                langToggle.addEventListener('click', () => {
+                    currentLang = currentLang === 'en' ? 'es' : 'en';
+                    localStorage.setItem('language', currentLang);
+                    updateContent();
+                });
+    
+                window.addEventListener('scroll', () => {
+                    const currentScrollPos = window.scrollY;
+                    // Lógica adicional de scroll si es necesaria
+                    lastScrollPos = currentScrollPos;
+                });
             };
     
             initialize();
         });
     </script>
+    <script>
+      // Cargar la animación
+      const animacion = lottie.loadAnimation({
+          container: document.getElementById("animacion"),
+          renderer: "svg",
+          loop: false,
+          autoplay: false,
+          path: "flecha.json"
+      });
+
+      // Controlar eventos de la animación
+      animacion.addEventListener("enterFrame", (e) => {
+          // Mostrar textos en frames específicos
+          if (Math.round(e.currentTime) === 16) {
+              document.getElementById("texto1").style.display = "block";
+          }
+          if (Math.round(e.currentTime) === 31) {
+              document.getElementById("texto2").style.display = "block";
+          }
+      });
+
+      // Iniciar animación al hacer clic
+      document.getElementById("animacion").addEventListener("click", () => {
+          animacion.play();
+      });
+  </script>
     </body>
 </html>
-    
-    

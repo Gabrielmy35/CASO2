@@ -3190,14 +3190,37 @@ html {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.solution-item-btm {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out;
+.lottie-animation {
+  transition: transform 0.3s ease;
 }
 
+.solution-item-btm {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: 
+    max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease 0.1s;
+  padding: 0 15px;
+}
+
+/* Aquí forzamos la visibilidad cuando max-height sea distinto de 0 */
+.solution-item-btm:not([style*="max-height: 0"]) {
+  opacity: 1 !important;
+  margin-top: 10px !important;
+}
 .solution-item-btm.active {
-  max-height: 500px; /* Ajustar según necesidad */
+    opacity: 1;
+    margin-top: 10px; /* Separación visual */
+}
+
+.lottie-animation {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.solution-item-top:hover .lottie-animation {
+  transform: scale(1.1);
 }
 /* Animación de fadeIn */
 @keyframes fadeInUp {

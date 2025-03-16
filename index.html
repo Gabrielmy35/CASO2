@@ -164,7 +164,7 @@
                     </div>
                   </div>
                   <div class="solution-item-btm">
-                    <div class="p-18 grey texto-oculto" data-en="Organize and manage all your team's chats in one place"
+                    <div class="p-18 grey" data-en="Organize and manage all your team's chats in one place"
                          data-es="Organiza y gestiona todos los chats de tu equipo en un solo lugar">
                       Organize and manage all your team's chats in one place
                     </div>
@@ -332,7 +332,7 @@
     let observer;
     let lastScrollPos = window.scrollY;
     const lottieAnimations = new Map();
-    
+
     // 1. Inicializar animaciones Lottie
     const initLottieAnimations = () => {
         document.querySelectorAll('.lottie-animation').forEach(container => {
@@ -349,19 +349,22 @@
                 anim.goToAndStop(0, true);
             });
 
-            container.animation = anim;
-            container.dataset.expanded = 'false';
             lottieAnimations.set(container, anim);
+            container.dataset.expanded = 'false';
         });
     };
 
-    // 2. Configurar el acordeón
+    // 2. Configurar el acordeón con animación de flecha
     const setupAccordion = () => {
         document.querySelectorAll('.solution-item-top').forEach(item => {
             item.addEventListener('click', function() {
                 const container = this.querySelector('.lottie-animation');
                 const content = this.nextElementSibling; // .solution-item-btm
-                const anim = container.animation;
+
+                // Verificar si la animación existe
+                if (!container || !lottieAnimations.has(container)) return;
+
+                const anim = lottieAnimations.get(container);
                 const isExpanded = container.dataset.expanded === "true";
 
                 anim.goToAndStop(0, true);
@@ -372,9 +375,11 @@
                     content.style.display = "block";
                     content.style.maxHeight = content.scrollHeight + "px";
                     content.style.opacity = "1";
+                    this.classList.add('active'); // Agregar clase cuando se expande
                 } else {
                     content.style.maxHeight = "0";
                     content.style.opacity = "0";
+                    this.classList.remove('active'); // Quitar clase cuando se colapsa
                     setTimeout(() => content.style.display = "none", 300);
                 }
 
@@ -474,6 +479,7 @@
 
     initialize();
 });
+
         </script>
     </body>
 </html>
